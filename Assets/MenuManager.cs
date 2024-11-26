@@ -26,4 +26,9 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync(0);
     }
 
+    public void LoadLevelSelect()
+    {
+        SceneManager.LoadSceneAsync(5);
+    }
+
 }
