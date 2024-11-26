@@ -21249,7 +21249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCam: {fileID: 116592560}
   roomText: {fileID: 942003328}
-  displayText: Getting The Basics
+  displayText: 'Level 1: Getting The Basics'
   displayDuration: 1
 --- !u!1 &1394512736
 GameObject:
