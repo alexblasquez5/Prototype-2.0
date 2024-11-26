@@ -13,20 +13,20 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canDash = true;
     private bool isDashing;
-    private float dashingPower = 54f;
+    private float dashingPower = 25f;
     private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
+    private float dashingCooldown = 0.4f;
 
     private bool isDamaged = false;
 
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    private float wallSlidingSpeed = 1f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuration = 0.4f;
+    private float wallJumpingDuration = 0.2f;
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
     private bool ignoreVelocityCap = false;
