@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Prototype-2.sln"
+    "Prototype-2.sln=======dotnet.defaultSolution": "Prototype-2.0.sln>>>>>>>Stashedchanges",
+    "dotnet.defaultSolution": "Prototype-2.0.sln"
 }

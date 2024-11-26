@@ -2971,7 +2971,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.9946, y: -0.4448}
+  m_AnchoredPosition: {x: -2.9946, y: -0.48}
   m_SizeDelta: {x: 12.712, y: 7.8363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &729441882
@@ -3479,6 +3479,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 651017254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &881029959
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1441176982515819804, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_Name
+      value: Player 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655700416448547063, guid: 75650c75574d37e40b3f26319d989460, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 75650c75574d37e40b3f26319d989460, type: 3}
 --- !u!1 &906381087
 GameObject:
   m_ObjectHideFlags: 0
@@ -13881,7 +13938,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.4615386, y: 2.4615386}
-    newSize: {x: 2.16, y: 2.16}
+    newSize: {x: 2.4615386, y: 2.4615386}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -13935,7 +13992,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.16, y: 2.16}
+  m_Size: {x: 2.4615386, y: 2.4615386}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -18667,7 +18724,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.4615386, y: 2.4615386}
-    newSize: {x: 2.16, y: 2.16}
+    newSize: {x: 2.4615386, y: 2.4615386}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -18721,7 +18778,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.16, y: 2.16}
+  m_Size: {x: 2.4615386, y: 2.4615386}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -20889,8 +20946,12 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+<<<<<<< Updated upstream
   - {fileID: 524263576}
+=======
+>>>>>>> Stashed changes
   - {fileID: 2080392606}
+  - {fileID: 881029959}
   - {fileID: 1392872350}
   - {fileID: 1381625968}
   - {fileID: 1665322340}
