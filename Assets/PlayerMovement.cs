@@ -15,10 +15,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing;
     private float dashingPower = 54f;
     private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
+    private float dashingCooldown = 0.4f;
 
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    private float wallSlidingSpeed = 3f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
