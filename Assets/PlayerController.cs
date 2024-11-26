@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
     public float speed = 10;
     public float jumpForce = 50;
     public float dashForce = 20;
-    public bool isGrounded;
+    public bool isGrounded = false;
     public Transform groundCheck;
     public float checkRadius = 0.2f;
     public LayerMask whatIsGround;
+
 
 
 
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
         //Jump Button is Pressed
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Jump();
+            Jump();  
         }
 
         //Dash Button ('j') is pressed
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
     }
+
 
     private void Walk(Vector2 direction)
     {
@@ -71,4 +73,5 @@ public class PlayerController : MonoBehaviour
             rb.velocity += direction * dashForce;
         }
     }
+
 }

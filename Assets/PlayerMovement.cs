@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private float dashingTime = 0.2f;
     private float dashingCooldown = 1f;
 
+    private bool isDamaged = false;
+
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
 
@@ -30,9 +32,9 @@ public class PlayerMovement : MonoBehaviour
     private bool ignoreVelocityCap = false;
 
     public bool isOnPlatform;
-  // Assigned dynamically from moving platform
-[HideInInspector]
-public Rigidbody2D platformRb;
+    [HideInInspector]
+    public Rigidbody2D platformRb;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -40,7 +42,16 @@ public Rigidbody2D platformRb;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    // Animator reference
+    private Animator animator;
+
     private Vector2 previousPlatformVelocity;
+
+    void Awake()
+    {
+        // Initialize Animator component
+        animator = GetComponent<Animator>();
+    }
 
     void Update()
     {
@@ -85,25 +96,39 @@ public Rigidbody2D platformRb;
         {
             Flip();
         }
+
+        // Update Animator parameters
+        UpdateAnimator();
     }
 
     private void FixedUpdate()
-{
-    if (isDashing || isWallJumping)
     {
-        return;
+        if (isDashing || isWallJumping)
+        {
+            return;
+        }
+
+        if (isOnPlatform && platformRb != null)
+        {
+            // Add platform velocity if assigned
+            rb.velocity = new Vector2(horizontal * speed + platformRb.velocity.x, rb.velocity.y);
+        }
+
+        else
+        {
+            // Fallback to normal behavior
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
     }
 
-    if (isOnPlatform && platformRb != null)
-    {
-        // Add platform velocity if assigned
-        rb.velocity = new Vector2(horizontal * speed + platformRb.velocity.x, rb.velocity.y);
-    }
-    else
-    {
-        // Fallback to normal behavior
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-    }
+   private void UpdateAnimator()
+{
+    animator.SetFloat("speed", Mathf.Abs(horizontal));
+    animator.SetBool("isJumping", isJumping);
+    animator.SetFloat("verticalSpeed", rb.velocity.y);
+    animator.SetBool("isDashing", isDashing);
+    animator.SetBool("isWallSliding", isWallSliding);
+    animator.SetBool("isDamaged", isDamaged);
 }
 
     private bool IsGrounded()
@@ -137,18 +162,20 @@ public Rigidbody2D platformRb;
 
     private IEnumerator Dash()
     {
-        canDash = false;
-        isDashing = true;
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        tr.emitting = true;
-        yield return new WaitForSeconds(dashingTime);
-        tr.emitting = false;
-        rb.gravityScale = originalGravity;
-        isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+    canDash = false;
+    isDashing = true;
+    animator.SetBool("isDashing", true); // Trigger Dash animation
+    float originalGravity = rb.gravityScale;
+    rb.gravityScale = 0f;
+    rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+    tr.emitting = true;
+    yield return new WaitForSeconds(dashingTime);
+    tr.emitting = false;
+    rb.gravityScale = originalGravity;
+    isDashing = false;
+    animator.SetBool("isDashing", false); // End Dash animation
+    yield return new WaitForSeconds(dashingCooldown);
+    canDash = true;
     }
 
     private bool IsWalled()
@@ -157,54 +184,70 @@ public Rigidbody2D platformRb;
     }
 
     private void WallSlide()
+{
+    if (IsWalled() && !IsGrounded() && rb.velocity.y < 0)
     {
-        if (IsWalled() && !IsGrounded() && rb.velocity.y < 0)
+        isWallSliding = true;
+        animator.SetBool("isWallSliding", true); // Trigger Wall Slide animation
+
+        // Flip the character to face away from the wall
+        if (transform.position.x < wallCheck.position.x && isFacingRight)
         {
-            isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x * 0.5f, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+            Flip();
         }
-        else
+        else if (transform.position.x > wallCheck.position.x && !isFacingRight)
         {
-            isWallSliding = false;
+            Flip();
         }
+
+        // Apply sliding physics
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
     }
+    else
+    {
+        isWallSliding = false;
+        animator.SetBool("isWallSliding", false); // End Wall Slide animation
+    }
+}
+
 
     private void WallJump()
+{
+    if (isWallSliding)
     {
-        if (isWallSliding)
-        {
-            wallJumpingDirection = -Mathf.Sign(transform.position.x - wallCheck.position.x); // Away from wall
-            wallJumpingCounter = wallJumpingTime;
+        // Determine jump direction based on wall position
+        wallJumpingDirection = transform.position.x > wallCheck.position.x ? 1 : -1; 
+        wallJumpingCounter = wallJumpingTime;
 
-            CancelInvoke(nameof(StopWallJumping));
-        }
-        else
-        {
-            wallJumpingCounter -= Time.deltaTime;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && wallJumpingCounter > 0f)
-        {
-            isWallJumping = true;
-            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
-            wallJumpingCounter = 0f;
-
-            Invoke(nameof(StopWallJumping), wallJumpingDuration);
-        }
-
-        // Reset wall jumping if hitting a platform above
-        if (IsTouchingCeiling())
-        {
-            StopWallJumping();
-        }
+        CancelInvoke(nameof(StopWallJumping));
     }
+    else
+    {
+        wallJumpingCounter -= Time.deltaTime;
+    }
+
+    if (Input.GetKeyDown(KeyCode.Space) && wallJumpingCounter > 0f)
+    {
+        isWallJumping = true;
+        rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+        wallJumpingCounter = 0f;
+
+        Invoke(nameof(StopWallJumping), wallJumpingDuration);
+    }
+
+    // Reset wall jumping if hitting a platform above
+    if (IsTouchingCeiling())
+    {
+        StopWallJumping();
+    }
+}
+
 
     private bool IsTouchingCeiling()
     {
-        // Check for collision above the player using a small raycast or OverlapCircle
         Vector2 position = transform.position;
         Vector2 direction = Vector2.up;
-        float distance = 0.5f; // Adjust as needed for your character's size
+        float distance = 0.5f;
 
         RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, groundLayer);
         return hit.collider != null;
@@ -215,4 +258,19 @@ public Rigidbody2D platformRb;
         isWallJumping = false;
         wallJumpingCounter = 0f;
     }
+
+
+    public void TakeDamage()
+{
+    isDamaged = true;
+    animator.SetBool("isDamaged", true); // Trigger Damage animation
+    StartCoroutine(EndDamageState());
+}
+
+private IEnumerator EndDamageState()
+{
+    yield return new WaitForSeconds(0.5f); // Adjust time based on your damage animation length
+    isDamaged = false;
+    animator.SetBool("isDamaged", false); // End Damage animation
+}
 }
